@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #444;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        nav a:hover {
+            background: #555;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .products {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .product {
+            background: white;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 200px;
+        }
+        .product img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .product button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .product button:hover {
+            background: #218838;
+        }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background: #fff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: #ff5722;
+            color: #fff;
+            font-size: 18px;
+        }
+        .close {
+            cursor: pointer;
+            font-size: 22px;
+        }
+        .cart-items {
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .order-summary {
+            padding: 15px;
+            background: #f8f8f8;
+            font-size: 16px;
+            text-align: right;
+        }
+        .order-now-btn {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
+            padding: 10px;
+            background: #ff5722;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .order-now-btn:hover {
+            background: #e64a19;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SINHS CANTEEN</h1>
+    </header>
+
+<center>
+<table border=5 bgcolor=lightgray width=40%>
+<th><a href="About us.html">ABOUT US</a></th>
+
+
+<div class="container">
+    <h2>Featured Products</h2>
+    <div class="products">
+        <!-- Product 1 - Menudo -->
+        <div class="product">
+            <img src="https://assets.unileversolutions.com/recipes-v2/240252.jpg" alt="Product 1">
+            <h3>Menudo</h3>
+            <p>P50.00</p>
+            <button onclick="openModal('Menudo', 50)">Add to Order</button>
+        </div>
+
+        <!-- Product 2 - Sisig Egg Rice -->
+        <div class="product">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.TFn_sNkOY0bv6_DtP9GV3QHaE8&pid=Api&P=0&h=220" alt="Product 2">
+            <h3>Sisig Egg Rice</h3>
+            <p>P60.00</p>
+            <button onclick="openModal('Sisig Egg Rice', 60)">Add to Order</button>
+        </div>
+
+        <!-- Product 3 - Shawarma Rice -->
+        <div class="product">
+            <img src="https://tse3.mm.bing.net/th?id=OIP.8RWxTJbRriCO5IiefpgVNgHaE8&pid=Api&P=0&h=220" alt="Product 3">
+            <h3>Shawarma Rice</h3>
+            <p>P80.00</p>
+            <button onclick="openModal('Shawarma Rice', 80)">Add to Order</button>
+        </div>
+    </div>
+</div>
+
+<!-- View Order Button -->
+<button class="view-order-btn" onclick="openCart()">View Order</button>
+
+<!-- Modal for Quantity Selection -->
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Select Quantity</h2>
+        <input type="number" id="orderQuantity" class="quantity-input" min="1" value="1">
+        <br>
+        <button class="confirm-btn" onclick="addToCart()">Confirm Order</button>
+    </div>
+</div>
+
+<!-- Cart Popup -->
+<div id="cartPopup" class="popup" role="dialog" aria-labelledby="cartTitle">
+    <div class="popup-content">
+        <div class="popup-header">
+            <h2 id="cartTitle">Your Cart</h2>
+            <span class="close" onclick="closeCart()">&times;</span>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="order-summary">
+            <p>Total: <strong>P<span id="totalPrice">0</span></strong></p>
+        </div>
+        <button class="order-now-btn" onclick="placeOrder()">Checkout</button>
+    </div>
+</div>
+
+<!-- CSS for Modal and Styling -->
+<style>
+    .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 1; 
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.4); 
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .quantity-input {
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 60px;
+    }
+
+    .confirm-btn {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .confirm-btn:hover {
+        background-color: #45a049;
+    }
+
+    .order-summary {
+        margin-top: 20px;
+    }
+
+    .cart-items p {
+        font-size: 16px;
+    }
+
+    .order-now-btn {
+        padding: 10px 20px;
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .order-now-btn:hover {
+        background-color: #0b7dda;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .popup-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        width: 80%;
+        max-width: 500px;
+    }
+</style>
+
+<!-- JavaScript for Modal, Cart, and Order Functionality -->
+<script>
+    let cart = [];
+    let total = 0;
+    let currentProductName = '';
+    let currentProductPrice = 0;
+
+    // Open the modal to select quantity
+    function openModal(name, price) {
+        currentProductName = name;
+        currentProductPrice = price;
+        document.getElementById('orderModal').style.display = "block";
+    }
+
+    // Close the modal
+    function closeModal() {
+        document.getElementById('orderModal').style.display = "none";
+    }
+
+    // Add product to the cart after selecting quantity
+    function addToCart() {
+        const qty = document.getElementById('orderQuantity').value;
+        if (qty <= 0) {
+            alert('Please select a valid quantity.');
+            return;
+        }
+
+        const itemTotal = currentProductPrice * qty;
+        cart.push({ name: currentProductName, price: currentProductPrice, qty: qty, itemTotal });
+
+        total += itemTotal;
+        updateCart();
+        closeModal();
+    }
+
+    // Update the cart display
+    function updateCart() {
+        const cartItemsDiv = document.getElementById('cartItems');
+        cartItemsDiv.innerHTML = '';
+        cart.forEach(item => {
+            cartItemsDiv.innerHTML += `<p>${item.name} (x${item.qty}) - P${item.itemTotal}</p>`;
+        });
+
+        document.getElementById('totalPrice').textContent = total.toFixed(2);
+    }
+
+    // Open the cart popup
+    function openCart() {
+        document.getElementById("cartPopup").style.display = "flex";
+    }
+
+    // Close the cart popup
+    function closeCart() {
+        document.getElementById("cartPopup").style.display = "none";
+    }
+
+    // Place the order and reset cart
+    function placeOrder() {
+        alert("Your order has been placed!");
+        cart = [];
+        total = 0;
+        updateCart();
+        closeCart();
+    }
+
+    // Close the cart if clicked outside
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('cartPopup')) {
+            closeCart();
+        }
+    }
+</script>
+    <footer>
+        <p>&copy; Online Ordering System</p>
+    </footer>
+
+</body>
+</html>
